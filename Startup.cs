@@ -31,6 +31,7 @@ namespace vega
                 options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
 
             services.AddMvc();

@@ -12,13 +12,13 @@ namespace vega.Controllers
     [Route("/api/vehicles")]
     public class VehiclesController : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly VegaDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IVehicleRepository _repository;
+        private readonly IMapper _mapper;
 
-        public VehiclesController(VegaDbContext context, IVehicleRepository repository, IMapper mapper)
+        public VehiclesController(IUnitOfWork unitOfWork, IVehicleRepository repository, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _repository = repository;
             _mapper = mapper;
         }
@@ -49,8 +49,8 @@ namespace vega.Controllers
             var vehicle = _mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource);
             vehicle.LastUpdate = DateTime.Now;
 
-            _context.Vehicles.Add(vehicle);
-            await _context.SaveChangesAsync();
+            _repository.Add(vehicle);
+            await _unitOfWork.CompliteAsync();
 
             vehicle = await _repository.GetVehicle(vehicle.Id);
 
@@ -70,7 +70,7 @@ namespace vega.Controllers
             _mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource, vehicle);
             vehicle.LastUpdate = DateTime.Now;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CompliteAsync();
 
             var result = _mapper.Map<Vehicle, VehicleResource>(vehicle);
 
@@ -80,13 +80,13 @@ namespace vega.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await _repository.GetVehicle(id, includeRelated: false);
 
             if (vehicle == null)
                 return NotFound();
 
-            _context.Remove(vehicle);
-            await _context.SaveChangesAsync();
+            _repository.Remove(vehicle);
+            await _unitOfWork.CompliteAsync();
 
             return Ok(id);
         }
