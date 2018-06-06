@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using vega.Controllers.Resources;
+using vega.Core.Models;
 using vega.Persistence;
-using vega.Models;
 
 namespace vega.Controllers
 {
