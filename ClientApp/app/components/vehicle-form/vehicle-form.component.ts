@@ -19,10 +19,11 @@ export class VehicleFormComponent implements OnInit {
     this.vehicleService.getMakes().subscribe(makes => this.makes = makes);
     this.vehicleService.getFeatures().subscribe(features => this.features = features);
   }
-
+  
   onMakeChenge() {
-    var selectedMake = this.makes.find(m => m.id == this.vehicle.make);
+    var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];
+    delete this.vehicle.modelId;
   }
 
 }
