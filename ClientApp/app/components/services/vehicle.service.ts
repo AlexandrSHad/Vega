@@ -18,8 +18,8 @@ export class VehicleService {
   }
   
   create(vehicle: any) {
-    this.http.post("/api/vehicles", vehicle)
-      .subscribe(x => console.log(x));
+    return this.http.post("/api/vehicles", vehicle)
+      .map(res => res.json());
   }
 
 }
