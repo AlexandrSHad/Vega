@@ -1,3 +1,5 @@
+import { AppErrorHandler } from './app.error-handler';
+import { ErrorHandler } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +38,10 @@ import { VehicleService } from './components/services/vehicle.service';
         ]),
         ToastyModule.forRoot(),
     ],
-    providers: [VehicleService]
+    providers: [
+        { provide: ErrorHandler, useClass: AppErrorHandler },
+        VehicleService
+    ]
 })
 export class AppModuleShared {
 }
