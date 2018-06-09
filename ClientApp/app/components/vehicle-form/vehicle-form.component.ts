@@ -13,6 +13,7 @@ export class VehicleFormComponent implements OnInit {
   features: any[] = [];
   vehicle: any = {
     features: [],
+    contact: {},
   };
   
   constructor(private vehicleService: VehicleService) { }
