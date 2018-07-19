@@ -22,6 +22,16 @@ namespace vega
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // debug server side rendering
+            // To debug
+            //   * Uncomment three line bellow
+            //   * Open chrome://inspect in a Chromium-based browser. Click the Configure button and ensure your target host and port are listed.
+            // services.AddNodeServices(options => {
+            //     options.LaunchWithDebugging = true;
+            //     options.DebuggingPort = 9229;
+            // });
+            // debug
+            
             services.AddAutoMapper();
             
             services.AddDbContext<VegaDbContext>(options =>
