@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
 import { VehicleService } from './../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -31,17 +33,28 @@ export class VehicleFormComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.vehicleService.getVehicle(this.vehicle.id)
-      .subscribe(
-        v => this.vehicle = v,
-        err => {
-          if (err.status == 404)
-            this.router.navigate(['/home']); // in real app you can use something like ['/not-found'] route and appropriate component
-        }
-      );
+    
+    var sources = [
+      this.vehicleService.getMakes(),
+      this.vehicleService.getFeatures(),
+    ];
 
-    this.vehicleService.getMakes().subscribe(makes => this.makes = makes);
-    this.vehicleService.getFeatures().subscribe(features => this.features = features);
+    if (this.vehicle.id)
+      sources.push(this.vehicleService.getVehicle(this.vehicle.id));
+
+    Observable.forkJoin(sources).subscribe(data => {
+      this.makes = data[0];
+      this.features = data[1];
+
+      if (this.vehicle.id)
+        this.vehicle = data[2];
+    }, err => {
+      if (err.status == 404)
+        this.router.navigate(['/home']);
+        // in real app you can use something like ['/not-found'] route and appropriate component
+        // this will work only for getVehicle(), beacouse only from there we could get 404 error
+    });
+
   }
   
   onMakeChenge() {
