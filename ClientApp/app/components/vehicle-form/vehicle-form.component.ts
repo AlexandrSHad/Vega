@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
-import { VehicleService } from './../services/vehicle.service';
+import { VehicleService } from './../../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
