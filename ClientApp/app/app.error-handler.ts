@@ -14,7 +14,7 @@ export class AppErrorHandler implements ErrorHandler {
             //Raven.captureException(error.originalError || error);
         }
         else
-            throw error;
+            console.error("An unexpected error happened: ", error);
         
         this.ngZone.run(() => {
             if (window !== undefined) {
