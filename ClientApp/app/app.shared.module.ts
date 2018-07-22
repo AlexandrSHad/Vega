@@ -31,7 +31,7 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'vehicles/new', component: VehicleFormComponent },
             { path: 'vehicles/:id', component: VehicleFormComponent },
             { path: 'vehicles', component: VehicleListComponent },
