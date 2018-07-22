@@ -2,7 +2,20 @@
 <p>
   <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Vehicle</a>
 </p>
-<table class="table"></table>
+
+<div class="well">
+  <div class="form-group">
+    <label for="make"></label>
+    <select id="make" class="form-control" [(ngModel)]="filter.makeId" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let m of makes" value="{{ m.id }}">{{ m.name }}</option>
+    </select>
+    <p>
+      {{ filter | json }}
+    </p>
+  </div>
+  <button class="btn btn-default" (click)="resetFilter()">Reset</button>
+</div>
 
 <table class="table">
   <thead>
@@ -20,7 +33,9 @@
       <td>{{ v.make.name }}</td>
       <td>{{ v.model.name }}</td>
       <td>{{ v.contact.name }}</td>
-      <td><a [routerLink]="['/vehicles', v.id]">View</a></td>
+      <td>
+        <a [routerLink]="['/vehicles', v.id]">View</a>
+      </td>
     </tr>
   </tbody>
 </table>
