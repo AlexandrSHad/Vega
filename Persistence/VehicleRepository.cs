@@ -5,6 +5,7 @@ using vega.Core;
 using vega.Core.Models;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace vega.Persistence
 {
@@ -43,6 +44,18 @@ namespace vega.Persistence
                 
             if (vehicleQuery.MakeId.HasValue)
                 query = query.Where(v => v.Model.MakeId == vehicleQuery.MakeId.Value);
+
+            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
+            {
+                ["make"] = v => v.Model.Make.Name,
+                ["model"] = v => v.Model.Name,
+                ["contactName"] = v => v.ContactName,
+            };
+
+            if (vehicleQuery.IsSortAscending)
+                query = query.OrderBy(columnsMap[vehicleQuery.SortBy]);
+            else
+                query = query.OrderByDescending(columnsMap[vehicleQuery.SortBy]);
 
             return await query.ToListAsync();
         }
