@@ -6,6 +6,7 @@ using vega.Core.Models;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using vega.Extensions;
 
 namespace vega.Persistence
 {
@@ -51,11 +52,7 @@ namespace vega.Persistence
                 ["model"] = v => v.Model.Name,
                 ["contactName"] = v => v.ContactName,
             };
-
-            if (vehicleQuery.IsSortAscending)
-                query = query.OrderBy(columnsMap[vehicleQuery.SortBy]);
-            else
-                query = query.OrderByDescending(columnsMap[vehicleQuery.SortBy]);
+            query = query.ApplyOrdering(vehicleQuery, columnsMap);
 
             return await query.ToListAsync();
         }
