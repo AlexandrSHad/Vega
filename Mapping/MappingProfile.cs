@@ -52,7 +52,7 @@ namespace vega.Mapping
                         v.Features.Add(f);
                 });
             
-            CreateMap<FilterResource, Filter>();
+            CreateMap<VehicleQueryResource, VehicleQuery>();
         }
     }
 }
