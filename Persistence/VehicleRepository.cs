@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using vega.Core;
 using vega.Core.Models;
 using System;
+using System.Linq;
 
 namespace vega.Persistence
 {
@@ -31,14 +32,19 @@ namespace vega.Persistence
                 .SingleOrDefaultAsync(v => v.Id == id);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles()
+        public async Task<IEnumerable<Vehicle>> GetVehicles(Filter filter)
         {
-            return await _context.Vehicles
+            var query = _context.Vehicles
                 .Include(v => v.Model)
                     .ThenInclude(m => m.Make)
                 .Include(v => v.Features)
                     .ThenInclude(vf => vf.Feature)
-                .ToListAsync();
+                .AsQueryable();
+                
+            if (filter.MakeId.HasValue)
+                query = query.Where(v => v.Model.MakeId == filter.MakeId.Value);
+
+            return await query.ToListAsync();
         }
 
         public void Add(Vehicle vehicle)
