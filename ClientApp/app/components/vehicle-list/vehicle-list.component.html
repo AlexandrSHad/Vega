@@ -42,3 +42,4 @@
     </tr>
   </tbody>
 </table>
+<pagination [total-items]="20" [page-size]="query.pageSize" (page-changed)="onPageChanged($event)"></pagination>

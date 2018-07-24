@@ -11,7 +11,9 @@ import { Component, OnInit } from '@angular/core';
 export class VehicleListComponent implements OnInit {
   makes: KeyValuePair[] = [];
   vehicles: Vehicle[] = [];
-  query: any = {};
+  query: any = {
+    pageSize: 3, 
+  };
   columns = [
     { title: 'Id', key: 'id' },
     { title: 'Make', key: 'make', isSortable: true },
@@ -46,6 +48,11 @@ export class VehicleListComponent implements OnInit {
       this.query.isSortAscending = true;
     }
 
+    this.populateVehicles();
+  }
+
+  onPageChanged(page: number) {
+    this.query.page = page;
     this.populateVehicles();
   }
 

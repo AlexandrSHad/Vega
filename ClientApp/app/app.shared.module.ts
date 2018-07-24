@@ -1,5 +1,5 @@
 import { AppErrorHandler } from './app.error-handler';
-import { ErrorHandler } from '@angular/core';
+import { ErrorHandler, Component } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { CounterComponent } from './components/counter/counter.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { VehicleService } from './services/vehicle.service';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { PaginationComponent } from './components/shared/pagination.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
         FetchDataComponent,
         HomeComponent,
         VehicleFormComponent,
-        VehicleListComponent
+        VehicleListComponent,
+        PaginationComponent,
     ],
     imports: [
         CommonModule,
