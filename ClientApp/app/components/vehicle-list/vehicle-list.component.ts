@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VehicleListComponent implements OnInit {
   makes: KeyValuePair[] = [];
-  vehicles: Vehicle[] = [];
+  queryResult: any = {};
   query: any = {
     pageSize: 3, 
   };
@@ -58,6 +58,6 @@ export class VehicleListComponent implements OnInit {
 
   private populateVehicles() {
     this.vehicleService.getVehicles(this.query)
-      .subscribe(vehicles => this.vehicles = vehicles);
+      .subscribe(queryResult => this.queryResult = queryResult);
   }
 }
