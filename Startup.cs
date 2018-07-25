@@ -32,7 +32,11 @@ namespace vega
             // });
             // debug
             
-            services.AddAutoMapper();
+            services.AddAutoMapper(cfg => {
+                // disable inline mapping, only maps that was explicitly created can works
+                // more info: http://docs.automapper.org/en/stable/Inline-Mapping.html?highlight=CreateMissingTypeMaps
+                cfg.CreateMissingTypeMaps = false;
+            });
             
             services.AddDbContext<VegaDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default"))
