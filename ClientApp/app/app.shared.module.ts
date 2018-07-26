@@ -16,6 +16,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 import { VehicleService } from './services/vehicle.service';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { PaginationComponent } from './components/shared/pagination.component';
+import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { PaginationComponent } from './components/shared/pagination.component';
         VehicleFormComponent,
         VehicleListComponent,
         PaginationComponent,
+        VehicleViewComponent,
     ],
     imports: [
         CommonModule,
@@ -35,13 +37,16 @@ import { PaginationComponent } from './components/shared/pagination.component';
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'vehicles/new', component: VehicleFormComponent },
-            { path: 'vehicles/:id', component: VehicleFormComponent },
+            { path: 'vehicles/:id', component: VehicleViewComponent },
+            { path: 'vehicles/edit/:id', component: VehicleFormComponent },
             { path: 'vehicles', component: VehicleListComponent },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }
-        ]),
+        ],
+          //{ enableTracing: true } // <-- debugging purposes only
+        ),
         ToastyModule.forRoot(),
     ],
     providers: [
