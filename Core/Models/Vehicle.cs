@@ -27,6 +27,6 @@ namespace vega.Core.Models
         public DateTime LastUpdate { get; set; }
 
         public ICollection<VehicleFeature> Features { get; set; } = new Collection<VehicleFeature>();
-        public ICollection<Photo> Photos { get; set; }
+        public ICollection<Photo> Photos { get; set; } = new Collection<Photo>();
     }
 }
