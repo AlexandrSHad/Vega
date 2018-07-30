@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using vega.Core;
+using vega.Core.Models;
 using vega.Persistence;
 
 namespace vega
@@ -32,6 +33,8 @@ namespace vega
             // });
             // debug
             
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
+
             services.AddAutoMapper(cfg => {
                 // disable inline mapping, only maps that was explicitly created can works
                 // more info: http://docs.automapper.org/en/stable/Inline-Mapping.html?highlight=CreateMissingTypeMaps

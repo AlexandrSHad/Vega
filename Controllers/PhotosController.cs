@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using vega.Controllers.Resources;
 using vega.Core;
 using vega.Core.Models;
@@ -15,16 +16,16 @@ namespace vega.Controllers
     [Route("/api/vehicles/{vehicleId}/photos")]
     public class PhotosController : Controller
     {
-        private readonly int MAX_FILE_SIZE = 10 * 1024 * 1024;
-        private readonly string[] ACCEPTED_FILE_TYPES = new[] { ".jpeg", ".jpg", ".png" };
         private readonly IHostingEnvironment _host;
+        private readonly PhotoSettings _photoSettings;
         private readonly IMapper _mapper;
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public PhotosController(IHostingEnvironment host, IMapper mapper, IVehicleRepository vehicleRepository, IUnitOfWork unitOfWork)
+        public PhotosController(IHostingEnvironment host, IOptionsSnapshot<PhotoSettings> options, IMapper mapper, IVehicleRepository vehicleRepository, IUnitOfWork unitOfWork)
         {
             _host = host;
+            _photoSettings = options.Value;
             _mapper = mapper;
             _vehicleRepository = vehicleRepository;
             _unitOfWork = unitOfWork;
@@ -43,10 +44,10 @@ namespace vega.Controllers
             if (file.Length == 0)
                 return BadRequest("Empty file.");
 
-            if (file.Length > MAX_FILE_SIZE)
+            if (file.Length > _photoSettings.MaxFileSize)
                 return BadRequest("Max file size exceeded.");
 
-            if (!ACCEPTED_FILE_TYPES.Any(s => s == Path.GetExtension(file.FileName)))
+            if (!_photoSettings.IsSupported(file.FileName))
                 return BadRequest("Invalid file type.");
 
             var uploadsFolderPath = Path.Combine(_host.WebRootPath, "uploads");
