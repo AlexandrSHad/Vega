@@ -1,7 +1,7 @@
+import { PhotoService } from './../../services/photo.service';
 import { VehicleService } from './../../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { expressionType } from '@angular/compiler/src/output/output_ast';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-vehicle-view',
@@ -9,6 +9,7 @@ import { expressionType } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./vehicle-view.component.css']
 })
 export class VehicleViewComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: ElementRef = new ElementRef({});
   vehicleId: number = 0;
   vehicle: any;
 
@@ -16,6 +17,7 @@ export class VehicleViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private vehicleService: VehicleService,
+    private photoService: PhotoService,
   ) {
     this.route.params.subscribe(p => {
       this.vehicleId = +p['id'];
@@ -39,13 +41,18 @@ export class VehicleViewComponent implements OnInit {
   }
 
   delete() {
-    if (confirm('Are you sure?')){
+    if (confirm('Are you sure?')) {
       this.vehicleService.delete(this.vehicle.id)
         .subscribe(
           x => this.router.navigate(['/vehicles']),
           err => console.log(err)
         );
     }
+  }
+
+  uploadPhoto() {
+    this.photoService.upload(this.vehicleId, this.fileInput.nativeElement.files[0])
+      .subscribe(x => console.log(x));
   }
 
 }
