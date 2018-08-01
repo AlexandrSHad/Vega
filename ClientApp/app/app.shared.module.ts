@@ -4,7 +4,7 @@ import { ErrorHandler, Component } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, BrowserXhr } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { ToastyModule } from 'ng2-toasty';
 
@@ -18,6 +18,7 @@ import { VehicleService } from './services/vehicle.service';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.component';
+import { ProgressService, BrowserXhrWithProgress } from './services/progress.service';
 
 @NgModule({
     declarations: [
@@ -52,8 +53,10 @@ import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.com
     ],
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
+        { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
         VehicleService,
         PhotoService,
+        ProgressService,
     ]
 })
 export class AppModuleShared {
