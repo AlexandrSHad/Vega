@@ -47,6 +47,7 @@ namespace vega
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
 
             services.AddMvc();
         }
