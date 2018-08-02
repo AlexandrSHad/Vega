@@ -69,7 +69,10 @@ export class VehicleViewComponent implements OnInit {
         () => { this.progress = null; }
       );
 
-    this.photoService.upload(this.vehicleId, this.fileInput.nativeElement.files[0])
+    var file = this.fileInput.nativeElement.files[0];
+    this.fileInput.nativeElement.value = '';
+
+    this.photoService.upload(this.vehicleId, file)
       .subscribe(photo => {
         this.photos.push(photo);
       });
