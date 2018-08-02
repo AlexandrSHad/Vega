@@ -59,7 +59,7 @@ export class VehicleViewComponent implements OnInit {
   }
 
   uploadPhoto() {
-    this.progressService.uploadProgress
+    this.progressService.startTracking()
       .subscribe(
         progress => {
           this.zone.run(() => this.progress = progress);
