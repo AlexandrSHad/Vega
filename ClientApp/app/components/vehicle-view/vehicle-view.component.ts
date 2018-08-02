@@ -1,3 +1,4 @@
+import { ToastyService } from 'ng2-toasty';
 import { PhotoService } from './../../services/photo.service';
 import { VehicleService } from './../../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,6 +24,7 @@ export class VehicleViewComponent implements OnInit {
     private progressService: ProgressService,
     private vehicleService: VehicleService,
     private photoService: PhotoService,
+    private toastyService: ToastyService,
   ) {
     this.route.params.subscribe(p => {
       this.vehicleId = +p['id'];
@@ -75,6 +77,15 @@ export class VehicleViewComponent implements OnInit {
     this.photoService.upload(this.vehicleId, file)
       .subscribe(photo => {
         this.photos.push(photo);
+      },
+      err => {
+        this.toastyService.error({
+          title: 'Error',
+          msg: err.text(),
+          theme: 'bootstrap',
+          showClose: true,
+          timeout: 5000,
+        });
       });
   }
 
