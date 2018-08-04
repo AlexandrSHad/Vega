@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -33,6 +34,17 @@ namespace vega
             // });
             // debug
             
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://shad-vega.eu.auth0.com/";
+                options.Audience = "https://api.shad.vega.com";
+            });
+
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
 
             services.AddAutoMapper(cfg => {
@@ -69,6 +81,8 @@ namespace vega
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
