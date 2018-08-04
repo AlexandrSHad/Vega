@@ -12,9 +12,12 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/home']">
-                        <span class='glyphicon glyphicon-home'></span> Home
+                <li [routerLinkActive]="['link-active']" style="cursor: pointer;">
+                    <a (click)="authService.login()" *ngIf="!authService.isAuthenticated()">
+                        <span class='glyphicon glyphicon-user'></span> Login
+                    </a>
+                    <a (click)="authService.logout()" *ngIf="authService.isAuthenticated()">
+                        <span class='glyphicon glyphicon-user'></span> Logout
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">

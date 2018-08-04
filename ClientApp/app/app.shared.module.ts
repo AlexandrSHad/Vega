@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { PhotoService } from './services/photo.service';
 import { AppErrorHandler } from './app.error-handler';
 import { ErrorHandler, Component } from '@angular/core';
@@ -54,10 +55,18 @@ import { ProgressService, BrowserXhrWithProgress } from './services/progress.ser
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
-        VehicleService,
+        AuthService,
         PhotoService,
         ProgressService,
+        VehicleService,
     ]
 })
 export class AppModuleShared {
+
+    constructor(private authService: AuthService) {
+
+        authService.handleAuthentication();
+
+    }
+
 }
