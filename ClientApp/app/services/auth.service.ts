@@ -12,12 +12,19 @@ export class AuthService {
     clientID: 'JRTQlnumNsSg6nsy1DfVEYle65uY9gVw',
     domain: 'shad-vega.eu.auth0.com',
     responseType: 'token id_token',
-    audience: 'https://shad-vega.eu.auth0.com/userinfo',
+    audience: 'https://api.shad.vega.com',
     redirectUri: 'http://localhost:5000',
-    scope: 'openid'
+    scope: 'openid email profile',
   });
 
-  constructor(public router: Router) {}
+  profile: any;
+
+  constructor(public router: Router) {
+    var profileString = localStorage.getItem('profile');
+
+    if (profileString)
+      this.profile = JSON.parse(profileString);
+  }
 
   public login(): void {
     this.auth0.authorize();
@@ -29,6 +36,15 @@ export class AuthService {
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/vehicles']);
+
+        this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
+          if (error)
+            throw error;
+
+          localStorage.setItem('profile', JSON.stringify(profile));
+          this.profile = profile;
+        });
+
       } else if (err) {
         this.router.navigate(['/vehicles']);
         console.log(err);
@@ -49,6 +65,9 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('profile');
+    // Clear local variables
+    this.profile = null;
     // Go back to the home route
     this.router.navigate(['/vehicles']);
   }
