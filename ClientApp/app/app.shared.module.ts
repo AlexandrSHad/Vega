@@ -20,6 +20,7 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
 import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.component';
 import { ProgressService, BrowserXhrWithProgress } from './services/progress.service';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { ProgressService, BrowserXhrWithProgress } from './services/progress.ser
         VehicleListComponent,
         PaginationComponent,
         VehicleViewComponent,
+        AdminPanelComponent,
     ],
     imports: [
         CommonModule,
@@ -43,12 +45,13 @@ import { ProgressService, BrowserXhrWithProgress } from './services/progress.ser
             { path: 'vehicles/:id', component: VehicleViewComponent },
             { path: 'vehicles/edit/:id', component: VehicleFormComponent },
             { path: 'vehicles', component: VehicleListComponent },
+            { path: 'admin', component: AdminPanelComponent },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }
         ],
-          //{ enableTracing: true } // <-- debugging purposes only
+          //{ enableTracing: true } // <-- debugging purposes only - to debug route determination
         ),
         ToastyModule.forRoot(),
     ],
