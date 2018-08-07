@@ -63,7 +63,9 @@
   },
   "dependencies": {
     "@types/auth0-js": "^8.11.3",
+    "@types/jwt-decode": "^2.2.1",
     "auth0-js": "^9.7.3",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "jwt-decode": "^2.2.0"
   }
 }

@@ -17,6 +17,7 @@ const treeShakableModules = [
     'zone.js',
     'ng2-toasty',
     'ng2-toasty/bundles/style-bootstrap.css',
+    'jwt-decode',
 ];
 const nonTreeShakableModules = [
     'bootstrap',
