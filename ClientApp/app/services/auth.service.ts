@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
-import 'rxjs/add/operator/filter'
+import 'rxjs/add/operator/filter';
+import * as decode from 'jwt-decode';
 
 (window as any).global = window;
 
@@ -18,12 +19,20 @@ export class AuthService {
   });
 
   profile: any;
+  private roles: string[] = [];
 
   constructor(public router: Router) {
     var profileString = localStorage.getItem('profile');
 
     if (profileString)
       this.profile = JSON.parse(profileString);
+
+    var accessToken = localStorage.getItem('access_token');
+
+    if (accessToken) {
+      var tokenInfo = decode(accessToken);
+      this.roles = (tokenInfo as any)['https://api.shad.vega.com/roles'];
+    }
   }
 
   public login(): void {
@@ -44,6 +53,9 @@ export class AuthService {
           localStorage.setItem('profile', JSON.stringify(profile));
           this.profile = profile;
         });
+
+        var tokenInfo = decode(authResult.accessToken);
+        this.roles = (tokenInfo as any)['https://api.shad.vega.com/roles'];
 
       } else if (err) {
         this.router.navigate(['/vehicles']);
@@ -68,6 +80,7 @@ export class AuthService {
     localStorage.removeItem('profile');
     // Clear local variables
     this.profile = null;
+    this.roles = [];
     // Go back to the home route
     this.router.navigate(['/vehicles']);
   }
@@ -75,6 +88,10 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '{}');
     return new Date().getTime() < expiresAt;
+  }
+
+  public isInRole(roleName: string) {
+    return this.roles.indexOf(roleName) > -1;
   }
 
 }
