@@ -21,6 +21,8 @@ import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.component';
 import { ProgressService, BrowserXhrWithProgress } from './services/progress.service';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { AuthGuard } from './services/auth-guard.service';
+import { AuthAdminGuard } from './services/auth-admin-guard';
 
 @NgModule({
     declarations: [
@@ -45,7 +47,7 @@ import { AdminPanelComponent } from './components/admin-panel/admin-panel.compon
             { path: 'vehicles/:id', component: VehicleViewComponent },
             { path: 'vehicles/edit/:id', component: VehicleFormComponent },
             { path: 'vehicles', component: VehicleListComponent },
-            { path: 'admin', component: AdminPanelComponent },
+            { path: 'admin', component: AdminPanelComponent, canActivate: [ AuthAdminGuard ] },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
@@ -58,6 +60,8 @@ import { AdminPanelComponent } from './components/admin-panel/admin-panel.compon
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+        AuthGuard,
+        AuthAdminGuard,
         AuthService,
         PhotoService,
         ProgressService,
