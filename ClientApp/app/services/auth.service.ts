@@ -22,13 +22,15 @@ export class AuthService {
   private roles: string[] = [];
 
   constructor(public router: Router) {
-    var profileString = localStorage.getItem('profile');
+    this.readUserInfoFromLocalStorage();
+  }
 
+  private readUserInfoFromLocalStorage() {
+    var profileString = localStorage.getItem('profile');
     if (profileString)
       this.profile = JSON.parse(profileString);
 
     var accessToken = localStorage.getItem('access_token');
-
     if (accessToken) {
       var tokenInfo = decode(accessToken);
       this.roles = (tokenInfo as any)['https://api.shad.vega.com/roles'];
@@ -51,12 +53,8 @@ export class AuthService {
             throw error;
 
           localStorage.setItem('profile', JSON.stringify(profile));
-          this.profile = profile;
+          this.readUserInfoFromLocalStorage();
         });
-
-        var tokenInfo = decode(authResult.accessToken);
-        this.roles = (tokenInfo as any)['https://api.shad.vega.com/roles'];
-
       } else if (err) {
         this.router.navigate(['/vehicles']);
         console.log(err);
