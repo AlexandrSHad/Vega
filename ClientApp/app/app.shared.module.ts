@@ -23,7 +23,8 @@ import { ProgressService, BrowserXhrWithProgress } from './services/progress.ser
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthAdminGuard } from './services/auth-admin-guard';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './services/token.interceptor';
 
 @NgModule({
     declarations: [
@@ -62,6 +63,7 @@ import { HttpClientModule } from '@angular/common/http';
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
         AuthGuard,
         AuthAdminGuard,
         AuthService,
