@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using vega.Controllers;
 using vega.Core;
 using vega.Core.Models;
 using vega.Persistence;
@@ -43,6 +44,11 @@ namespace vega
             {
                 options.Authority = "https://shad-vega.eu.auth0.com/";
                 options.Audience = "https://api.shad.vega.com";
+            });
+
+            services.AddAuthorization(opt => {
+                opt.AddPolicy(Policies.RequireAdminRole, policy =>
+                    policy.RequireClaim("https://api.shad.vega.com/roles", "Admin"));
             });
 
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
