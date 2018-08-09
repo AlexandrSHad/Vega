@@ -46,9 +46,9 @@ import { JwtModule } from '@auth0/angular-jwt';
         HttpClientModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
-            { path: 'vehicles/new', component: VehicleFormComponent },
+            { path: 'vehicles/new', component: VehicleFormComponent, canActivate: [ AuthGuard ] },
             { path: 'vehicles/:id', component: VehicleViewComponent },
-            { path: 'vehicles/edit/:id', component: VehicleFormComponent },
+            { path: 'vehicles/edit/:id', component: VehicleFormComponent, canActivate: [ AuthGuard ] },
                 { path: 'vehicles', component: VehicleListComponent },
                 { path: 'admin', component: AdminPanelComponent, canActivate: [ AuthAdminGuard ] },
                 { path: 'home', component: HomeComponent },
