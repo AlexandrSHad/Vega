@@ -4,6 +4,8 @@ import { VehicleService } from './../../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/operator/defaultIfEmpty';
 import { SaveVehicle } from './../../model/vehicle/saveVehicle';
 import { Vehicle } from './../../model/vehicle/vehicle';
 
@@ -44,20 +46,18 @@ export class VehicleFormComponent implements OnInit {
 
   ngOnInit() {
     
-    var sources = [
+    Observable.forkJoin(
       this.vehicleService.getMakes(),
       this.vehicleService.getFeatures(),
-    ];
-
-    if (this.vehicle.id)
-      sources.push(this.vehicleService.getVehicle(this.vehicle.id));
-
-    Observable.forkJoin(sources).subscribe(data => {
-      this.makes = data[0];
-      this.features = data[1];
+      this.vehicle.id ? this.vehicleService.getVehicle(this.vehicle.id) : Observable.empty<Vehicle>().defaultIfEmpty()
+    )
+    .subscribe((data) => {
+      const [makes, features, vehicle] = data;
+      this.makes = makes;
+      this.features = features;
 
       if (this.vehicle.id) {
-        this.setVehicle(data[2]);
+        this.setVehicle(vehicle);
         this.populateModels();
       }
     }, err => {
