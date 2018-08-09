@@ -23,6 +23,7 @@ import { ProgressService, BrowserXhrWithProgress } from './services/progress.ser
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthAdminGuard } from './services/auth-admin-guard';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -41,6 +42,7 @@ import { AuthAdminGuard } from './services/auth-admin-guard';
         CommonModule,
         HttpModule,
         FormsModule,
+        HttpClientModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'vehicles/new', component: VehicleFormComponent },
