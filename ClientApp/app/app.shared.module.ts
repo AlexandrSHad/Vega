@@ -23,8 +23,8 @@ import { ProgressService, BrowserXhrWithProgress } from './services/progress.ser
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthAdminGuard } from './services/auth-admin-guard';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './services/token.interceptor';
+import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
     declarations: [
@@ -49,21 +49,27 @@ import { TokenInterceptor } from './services/token.interceptor';
             { path: 'vehicles/new', component: VehicleFormComponent },
             { path: 'vehicles/:id', component: VehicleViewComponent },
             { path: 'vehicles/edit/:id', component: VehicleFormComponent },
-            { path: 'vehicles', component: VehicleListComponent },
-            { path: 'admin', component: AdminPanelComponent, canActivate: [ AuthAdminGuard ] },
-            { path: 'home', component: HomeComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
-            { path: '**', redirectTo: 'home' }
-        ],
-          //{ enableTracing: true } // <-- debugging purposes only - to debug route determination
+                { path: 'vehicles', component: VehicleListComponent },
+                { path: 'admin', component: AdminPanelComponent, canActivate: [ AuthAdminGuard ] },
+                { path: 'home', component: HomeComponent },
+                { path: 'counter', component: CounterComponent },
+                { path: 'fetch-data', component: FetchDataComponent },
+                { path: '**', redirectTo: 'home' }
+            ],
+            //{ enableTracing: true } // <-- debugging purposes only - to debug route determination
         ),
+        JwtModule.forRoot({
+          config: {
+            tokenGetter: () => localStorage.getItem('access_token'),
+            // whitelistedDomains: ['localhost:5000'],
+            // blacklistedRoutes: ['shad-vega.eu.auth0.com']
+          }
+        }),
         ToastyModule.forRoot(),
     ],
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
-        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
         AuthGuard,
         AuthAdminGuard,
         AuthService,
