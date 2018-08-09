@@ -26,7 +26,7 @@ namespace vega.Controllers
         }
 
         [HttpPost()]
-        [Authorize(Policies.RequireAdminRole)]
+        [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
             // only for input validation
